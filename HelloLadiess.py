@@ -8,7 +8,7 @@ class PaintBox( Frame ):
       self.master.geometry( "300x150" )
 
       self.message = Label( self, text = "Drag the mouse to draw" )
-      
+      #Book
       
       self.b = Button(self, text="Clear", command=self.clear)
       
