@@ -1,38 +1,46 @@
-import sys
-from PySide.QtCore import*
-from PySide.QtGui import*
+from Tkinter import *
 
-class Simple_drawing_window_nitirk(QWidget):
-    def __init__(self):
-        QWidget.__init__(self, None)
+class PaintBox( Frame ):
+   def __init__( self ):
+      Frame.__init__( self )
+      self.pack( expand = YES, fill = BOTH )
+      self.master.title( "A simple paint program" )
+      self.master.geometry( "300x150" )
 
-        self.setWindowTitle("Simple Drawing")
- 
+      self.message = Label( self, text = "Drag the mouse to draw" )
+      
+      
+      self.b = Button(self, text="Clear", command=self.clear)
+      
+      self.b.pack( side = BOTTOM )
+      self.message.pack(side = BOTTOM)
+     # create Canvas component
+      self.myCanvas = Canvas( self )
+      self.myCanvas.pack( expand = YES, fill = BOTH )
 
-        
-    def paintEvent(self, e):
-        p = QPainter()
-        p.begin(self)
+      # bind mouse dragging event to Canvas
+      self.myCanvas.bind( "<B1-Motion>", self.paint )
+      
 
-        p.setPen(QColor(0, 0, 0))
-        p.setBrush(QColor(0, 127, 0))
-        p.setPen(QColor(255, 127, 0))
-        p.setBrush(QColor(255, 127, 0))
-        p.drawPie(50, 150, 100, 100, 0, 180 * 16)
+   def paint( self, event ):
+       x1, y1 = ( event.x - 4 ), ( event.y - 4 )
+       x2, y2 = ( event.x + 4 ), ( event.y + 4 )
+       self.myCanvas.create_oval( x1, y1, x2, y2, fill = "green" )
+   
+   def clear(self):
+       self.myCanvas.destroy()
+       
+       # create Canvas component
+       self.myCanvas = Canvas( self )
+       self.myCanvas.pack( expand = YES, fill = BOTH )
+
+      # bind mouse dragging event to Canvas
+       self.myCanvas.bind( "<B1-Motion>", self.paint )
+       
 
    
-        p.end()
-        
-        
-        
 def main():
-    app = QApplication(sys.argv)
-
-    w = Simple_drawing_window_nitirk()
-    w.show()
-  
-
-    return app.exec_()
+   PaintBox().mainloop()
 
 if __name__ == "__main__":
-    sys.exit(main())
+   main()
